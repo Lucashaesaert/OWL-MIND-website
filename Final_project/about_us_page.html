@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - OWL MIND</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background-color: #0a192f;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .logo {
+            width: 300px;
+            height: auto;
+            overflow: hidden;
+            clip-path: inset(0 0 30% 0);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #0a192f;
+            border-bottom: 2px solid #0a192f;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-content {
+            margin-top: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #0a192f;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0033cc;
+        }
+
+        /* Navigation */
+        .nav {
+            background-color: white;
+            padding: 1rem 0;
+            position: relative;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-logo {
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-logo img {
+            width: 40px;
+            margin-right: 0.5rem;
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 11;
+        }
+
+        .menu-toggle:focus {
+            outline: none;
+        }
+
+        .menu-toggle-line {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: black;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            right: -300px;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #0a192f;
+            z-index: 10;
+            transition: right 0.3s ease;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            padding-top: 70px;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-links li {
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            transition: background-color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-links a:hover {
+            background-color: #0033cc;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Hero section */
+        .hero {
+            background-image: url("images/accelerate.png");
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            color:darkgray;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        /* Team Section Styles */
+        .team-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .team-member {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .team-member img {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: cover;
+        }
+
+        .team-member-content {
+            padding: 1.5rem;
+        }
+
+        .team-member-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #0a192f;
+        }
+
+        .team-member-title {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .team-member-desc {
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #0a192f;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            width: 60px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .footer-links li {
+            margin: 0 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="Home_page.html" class="nav-logo">
+                <img src="Items/Branding Items/immagelogo.png" alt="OWL MIND Logo"> OWL MIND
+            </a>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+                <span class="menu-toggle-line"></span>
+                <span class="menu-toggle-line"></span>
+                <span class="menu-toggle-line"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="sidebar" id="sidebar">
+        <ul class="sidebar-links">
+            <li><a href="Home_page.html">Home</a></li>
+            <li><a href="about_us_page.html">About Us</a></li>
+            <li><a href="#mission">Our Mission</a></li>
+            <li><a href="#team">Our Team</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">About OWL MIND</h1>
+            <p class="hero-subtitle">Empowering professionals with AI knowledge and skills</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <section class="section" id="about">
+            <h2 class="section-title">About OWL MIND</h2>
+            <div class="section-content">
+                <p>
+                    OWL MIND is an AI education platform aimed at service companies. After spending 6 months at
+                    KPMG working in strategy consulting and talking with many colleagues there, I realized that there is a massive
+                    knowledge gap in the AI world.
+                    Every employee wants to be able to use it better, and managers expect their
+                    employees to leverage it, but the real uses are still extremely superficial.
+                </p>
+                <p>
+                    In big service companies, change
+                    happens slowly, and reskilling of employees does too.
+                    OWL MIND wants to prevent employees from getting left behind in
+                    this fast-changing environment by creating a platform that helps empower employees to reach their full potential
+                    with AI.
+                </p>
+                <p>
+                    AI solutions don't have a one-size-fits-all - OWL MIND believes that even though developing a killer
+                    app could be useful in the end, every person needs to use AI differently and for different very
+                    specific tasks;
+                    therefore, giving employees the tools to fish instead of the fish itself is the
+                    ultimate goal.
+                </p>
+                <p>
+                    The name OWL MIND represents our vision of empowering professionals with a second mind through
+                    strategic AI adoption.
+                    The name symbolizes the wisdom and curiosity that owls naturally embody—qualities
+                    essential for navigating the evolving AI landscape.
+                    Just as owls are known for their perceptive vision and
+                    adaptability, our platform helps employees see beyond conventional workflows and adapt to new technologies.
+                    This name also carries personal significance, connecting back to scouting experiences where the owl served
+                    as a spirit animal, representing the same thoughtful approach and natural inquisitiveness we aim to foster in
+                    the professional services community.
+                </p>
+            </div>
+        </section>
+
+        <section class="section" id="mission">
+            <h2 class="section-title">Our Mission</h2>
+            <div class="section-content">
+                <p>
+                    Our mission is to help employees learn about, leverage, and use AI safely in their current
+                    jobs to prevent becoming redundant while helping medium to large-sized service companies achieve increased
+                    efficiency.
+                </p>
+            </div>
+        </section>
+
+        <section class="section" id="team">
+            <h2 class="section-title">Our Team</h2>
+            <div class="section-content team-section">
+                <div class="team-member">
+                    <img src="Items/lucas.jpeg" alt="Founder Image">
+                    <div class="team-member-content">
+                        <h3 class="team-member-name">Lucas Haesaert</h3>
+                        <p class="team-member-title">Founder & CEO</p>
+                        <p class="team-member-desc">
+                            Passionate about the intersection of AI and professional development. Experienced in strategy consulting and AI implementation. Dedicated to empowering individuals and organizations to thrive in the age of AI.
+                        </p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="Items/TBCteam.jpeg" alt="CTO Image">
+                    <div class="team-member-content">
+                        <h3 class="team-member-name">To be continued</h3>
+                        <p class="team-member-title">CTO</p>
+                        <p class="team-member-desc">
+                        </p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="Items/TBCteam.jpeg" alt="Head of Education Image">
+                    <div class="team-member-content">
+                        <h3 class="team-member-name">To be continued</h3>
+                        <p class="team-member-title">Head of Education</p>
+                        <p class="team-member-desc">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <img src="Items/Branding Items/logo.png" alt="OWL MIND Logo" class="footer-logo">
+            <ul class="footer-links">
+                <li><a href="Home_page.html">Home</a></li>
+                <li><a href="about_us_page.html">About</a></li>
+                <li><a href="#mission">Mission</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <p class="footer-copyright">© 2025 OWL MIND. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Menu toggle functionality
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        menuToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+
+            // Change hamburger to X
+            const lines = this.querySelectorAll('.menu-toggle-line');
+            if (sidebar.classList.contains('active')) {
+                lines[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                lines[1].style.opacity = '0';
+                lines[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
+                lines[0].style.transform = 'none';
+                lines[1].style.opacity = '1';
+                lines[2].style.transform = 'none';
+            }
+        });
+
+        // Close menu when clicking outside
+        overlay.addEventListener('click', function () {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+
+            // Reset hamburger icon
+            const lines = menuToggle.querySelectorAll('.menu-toggle-line');
+            lines[0].style.transform = 'none';
+            lines[1].style.opacity = '1';
+            lines[2].style.transform = 'none';
+        });
+
+        // Close menu when clicking on a menu item
+        const menuLinks = document.querySelectorAll('.sidebar-links a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+
+                // Reset hamburger icon
+                const lines = menuToggle.querySelectorAll('.menu-toggle-line');
+                lines[0].style.transform = 'none';
+                lines[1].style.opacity = '1';
+                lines[2].style.transform = 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

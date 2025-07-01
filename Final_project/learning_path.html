@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your AI Learning Path | OWL MIND</title>
+    <style>
+        body { background: linear-gradient(135deg, #e0e7ff 0%, #f5f5ff 100%); color: #222; font-family: 'Nunito', Arial, sans-serif; }
+        .container { max-width: 1100px; margin: 2.5rem auto 1rem auto; padding: 0 1rem; background: none; box-shadow: none; border-radius: 0; }
+        h2 { color: #6c63ff; text-align: center; margin-bottom: 2rem; font-size: 2rem; font-weight: 900; letter-spacing: 0.01em; }
+        .user-email { text-align: center; color: #0a192f; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .duo-path-board {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto 2rem auto;
+            min-height: 600px;
+            height: 600px;
+        }
+        .duo-svg-path {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .duo-bubbles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .duo-bubble {
+            position: absolute;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            box-shadow: 0 8px 32px rgba(108,99,255,0.13), 0 2px 8px rgba(108,99,255,0.10);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #4b3cc4;
+            border: 4px solid #fff;
+            transition: transform 0.18s cubic-bezier(.4,1.4,.6,1), box-shadow 0.18s;
+            cursor: pointer;
+            outline: none;
+        }
+        .duo-bubble:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 40px 0 #a1c4fd, 0 2px 8px rgba(108,99,255,0.18);
+        }
+        .duo-bubble.completed {
+            background: linear-gradient(135deg, #b993ff 0%, #8ca6db 100%);
+            color: #fff;
+            border-color: #6c63ff;
+            animation: bubbleBounce 0.5s;
+        }
+        @keyframes bubbleBounce {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.18); }
+            60% { transform: scale(0.92); }
+            100% { transform: scale(1); }
+        }
+        .duo-bubble .bubble-index {
+            font-size: 1.7rem;
+            font-weight: 900;
+            margin-bottom: 0.2rem;
+            color: #6c63ff;
+        }
+        .duo-bubble.completed .bubble-index {
+            color: #fff;
+        }
+        .duo-bubble .bubble-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.2rem;
+        }
+        .duo-bubble .bubble-check {
+            font-size: 2.2rem;
+            color: #fff;
+            margin-top: 0.2rem;
+            text-shadow: 0 2px 8px #6c63ff44;
+        }
+        .duo-bubble .bubble-btn {
+            margin-top: 0.5rem;
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 0.4rem 1.2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 8px #6c63ff33;
+            transition: background 0.2s;
+        }
+        .duo-bubble .bubble-btn:hover {
+            background: #4b3cc4;
+        }
+        .duo-cta-section {
+            margin: 3.5rem auto 2rem auto;
+            max-width: 420px;
+            background: linear-gradient(135deg, #a1c4fd 0%, #b993ff 100%);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(108,99,255,0.13);
+            padding: 2.5rem 2rem 2rem 2rem;
+            text-align: center;
+            display: none;
+        }
+        .duo-cta-section.active { display: block; animation: ctaPop 0.7s; }
+        @keyframes ctaPop {
+            0% { transform: scale(0.7); opacity: 0; }
+            60% { transform: scale(1.08); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .duo-cta-headline {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #6c63ff;
+            margin-bottom: 0.7rem;
+        }
+        .duo-cta-subtext {
+            font-size: 1.1rem;
+            color: #4b3cc4;
+            margin-bottom: 1.2rem;
+        }
+        .duo-cta-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .duo-cta-form input[type="email"] {
+            padding: 0.7rem 1.2rem;
+            border-radius: 18px;
+            border: 1.5px solid #6c63ff;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 260px;
+            margin-bottom: 0.5rem;
+        }
+        .duo-cta-form button {
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 0.6rem 1.6rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 8px #6c63ff33;
+            transition: background 0.2s;
+        }
+        .duo-cta-form button:hover {
+            background: #4b3cc4;
+        }
+        .duo-cta-success {
+            color: #2ecc71;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 900px) {
+            .container { padding: 0 0.5rem; }
+            .duo-path-board { max-width: 100%; }
+        }
+        @media (max-width: 700px) {
+            .duo-path-board { min-height: 420px; height: 420px; }
+            .duo-bubble { width: 120px; height: 120px; font-size: 1rem; }
+            .duo-bubble .bubble-index { font-size: 1.2rem; }
+        }
+        /* Nav and sidebar styles from homepage */
+        .nav { background-color: white; padding: 1rem 0; position: relative; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
+        .nav-logo { color: black; text-decoration: none; font-weight: bold; font-size: 1.2rem; display: flex; align-items: center; }
+        .nav-logo img { width: 40px; margin-right: 0.5rem; }
+        .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 30px; height: 21px; background: transparent; border: none; cursor: pointer; padding: 0; z-index: 11; }
+        .menu-toggle:focus { outline: none; }
+        .menu-toggle-line { display: block; width: 100%; height: 3px; background-color: black; border-radius: 10px; transition: all 0.3s ease; }
+        .sidebar { position: fixed; right: -300px; top: 0; width: 300px; height: 100%; background-color: #0a192f; z-index: 10; transition: right 0.3s ease; box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); overflow-y: auto; padding-top: 70px; }
+        .sidebar.active { right: 0; }
+        .sidebar-links { list-style: none; padding: 0; }
+        .sidebar-links li { margin: 0; padding: 0; }
+        .sidebar-links a { display: block; color: white; text-decoration: none; padding: 15px 30px; transition: background-color 0.3s; font-size: 1.1rem; }
+        .sidebar-links a:hover { background-color: #0033cc; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        /* Footer styles from homepage */
+        .footer { background-color: #0a192f; color: white; padding: 2rem 0; text-align: center; }
+        .footer-content { max-width: 1200px; margin: 0 auto; }
+        .footer-logo { width: 60px; margin-bottom: 1rem; }
+        .footer-links { display: flex; justify-content: center; list-style: none; margin: 1rem 0; }
+        .footer-links li { margin: 0 1rem; }
+        .footer-links a { color: white; text-decoration: none; }
+        .footer-copyright { font-size: 0.9rem; opacity: 0.8; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <nav class="nav fade-in">
+        <div class="nav-container">
+            <a href="Home_page.html" class="nav-logo">
+                <img src="Items/Branding Items/immagelogo.png" alt="OWL MIND Logo"> OWL MIND
+            </a>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+                <span class="menu-toggle-line"></span>
+                <span class="menu-toggle-line"></span>
+                <span class="menu-toggle-line"></span>
+            </button>
+        </div>
+    </nav>
+    <div class="sidebar" id="sidebar">
+        <ul class="sidebar-links">
+            <li><a href="Home_page.html">Home</a></li>
+            <li><a href="#courses">Our Courses</a></li>
+            <li><a href="about_us_page.html">About Us</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+        </ul>
+    </div>
+    <div class="overlay" id="overlay"></div>
+    <div class="container">
+        <h2>Your 3-Part AI Learning Path</h2>
+        <div class="user-email" id="user-email"></div>
+        <div class="duo-path-board" id="duo-path-board">
+            <svg class="duo-svg-path" id="duo-svg-path"></svg>
+            <div class="duo-bubbles" id="duo-bubbles"></div>
+        </div>
+        <div class="duo-cta-section" id="duo-cta-section">
+            <div class="duo-cta-headline">🎉 You've completed your AI Starter Path!</div>
+            <div class="duo-cta-subtext">Sign up now to get early access to our full AI productivity program.</div>
+            <form class="duo-cta-form" id="duo-cta-form">
+                <input type="email" id="cta-email" name="cta-email" required placeholder="Your email address">
+                <button type="submit">Join the Waitlist</button>
+            </form>
+            <div class="duo-cta-success" id="duo-cta-success" style="display:none;">✅ You're on the list!</div>
+        </div>
+    </div>
+    <footer class="footer fade-in delay-5">
+        <div class="footer-content">
+            <img src="Items/Branding Items/logo.png" alt="OWL MIND Logo" class="footer-logo">
+            <ul class="footer-links">
+                <li><a href="Home_page.html">Home</a></li>
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="about_us_page.html">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <p class="footer-copyright">© 2025 OWL MIND. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        // Menu toggle functionality
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            const lines = this.querySelectorAll('.menu-toggle-line');
+            if (sidebar.classList.contains('active')) {
+                lines[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                lines[1].style.opacity = '0';
+                lines[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
+                lines[0].style.transform = 'none';
+                lines[1].style.opacity = '1';
+                lines[2].style.transform = 'none';
+            }
+        });
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            const lines = menuToggle.querySelectorAll('.menu-toggle-line');
+            lines[0].style.transform = 'none';
+            lines[1].style.opacity = '1';
+            lines[2].style.transform = 'none';
+        });
+        // Learning path logic
+        function getQueryParam(name) {
+            const url = new URL(window.location.href);
+            return url.searchParams.get(name);
+        }
+        const email = getQueryParam('email');
+        const reason = getQueryParam('reason');
+        const industry = getQueryParam('industry');
+        if(email) document.getElementById('user-email').textContent = `For: ${decodeURIComponent(email)}`;
+        // Build learning path
+        const courses = [
+            { title: 'Prompt Engineering for Business Professionals' },
+            reason === 'productivity' ?
+                { title: 'AI-Enhanced Workflows: Automate Repetitive Tasks' } :
+            reason === 'upskill' ?
+                { title: 'AI Use Policy & Team Enablement Guide' } :
+                { title: 'AI Fundamentals: What Every Professional Should Know' },
+            industry === 'strategy' ?
+                { title: 'Market Research with AI: From Zero to Insights' } :
+            industry === 'legal' ?
+                { title: 'Responsible AI in Legal Work: Redaction & Summarization' } :
+            industry === 'finance' ?
+                { title: 'AI in Finance: Building DCFs and Analyzing Reports' } :
+                { title: 'Cross-Industry AI Use Cases: What Works Where' }
+        ];
+        // Progress tracking with localStorage
+        const progressKey = 'owlmind_learning_path_progress';
+        const progressTimeKey = 'owlmind_learning_path_progress_time';
+        let progress = JSON.parse(localStorage.getItem(progressKey) || '[false,false,false]');
+        let progressTime = parseInt(localStorage.getItem(progressTimeKey) || '0', 10);
+        const now = Date.now();
+        const RESET_INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
+        if (progressTime && now - progressTime > RESET_INTERVAL) {
+            progress = [false, false, false];
+            localStorage.setItem(progressKey, JSON.stringify(progress));
+            localStorage.setItem(progressTimeKey, now.toString());
+        }
+        function saveProgress() {
+            localStorage.setItem(progressKey, JSON.stringify(progress));
+            localStorage.setItem(progressTimeKey, Date.now().toString());
+        }
+
+        // --- Duolingo-style Path Rendering ---
+        function getBubblePositions(width, height, count) {
+            let margin = 90;
+            let stepY;
+            let xOffsets;
+            if (width > 900) {
+                margin = 120;
+                stepY = (height - margin * 2) / (count - 1) + 40;
+                xOffsets = [-260, 240, -240, 280, -220, 260];
+            } else {
+                stepY = (height - margin * 2) / (count - 1);
+                xOffsets = [-160, 140, -140, 160, -140, 140];
+            }
+            const baseX = width / 2;
+            return Array.from({length: count}, (_, i) => ({
+                x: baseX + (xOffsets[i % xOffsets.length] || 0),
+                y: margin + i * stepY
+            }));
+        }
+
+        function renderDuoPath() {
+            const board = document.getElementById('duo-path-board');
+            const svg = document.getElementById('duo-svg-path');
+            const bubblesDiv = document.getElementById('duo-bubbles');
+            const w = board.offsetWidth;
+            const h = board.offsetHeight;
+            svg.setAttribute('width', w);
+            svg.setAttribute('height', h);
+            svg.innerHTML = '';
+            bubblesDiv.innerHTML = '';
+            const positions = getBubblePositions(w, h, courses.length);
+            let d = `M${positions[0].x},${positions[0].y}`;
+            for (let i = 1; i < positions.length; i++) {
+                const prev = positions[i - 1];
+                const curr = positions[i];
+                const direction = (i % 2 === 0) ? -1 : 1;
+                const bigCurve = 360;
+                const smallCurve = 140;
+                const c1x = prev.x + direction * bigCurve;
+                const c1y = prev.y + smallCurve * direction;
+                const c2x = curr.x - direction * bigCurve;
+                const c2y = curr.y - smallCurve * direction;
+                d += ` C${c1x},${c1y} ${c2x},${c2y} ${curr.x},${curr.y}`;
+            }
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', d);
+            path.setAttribute('stroke', '#b993ff');
+            path.setAttribute('stroke-width', '12');
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+            svg.appendChild(path);
+            // Render bubbles
+            positions.forEach((pos, i) => {
+                const bubble = document.createElement('div');
+                bubble.className = 'duo-bubble' + (progress[i] ? ' completed' : '');
+                bubble.style.left = `${pos.x - 90}px`;
+                bubble.style.top = `${pos.y - 90}px`;
+                bubble.tabIndex = 0;
+                // Index or check
+                const index = document.createElement('div');
+                index.className = 'bubble-index';
+                if (progress[i]) {
+                    index.innerHTML = '<span class="bubble-check">✔️</span>';
+                } else {
+                    index.textContent = i + 1;
+                }
+                bubble.appendChild(index);
+                // Title
+                const title = document.createElement('div');
+                title.className = 'bubble-title';
+                title.textContent = courses[i].title;
+                bubble.appendChild(title);
+                // Complete button
+                if (!progress[i]) {
+                    const btn = document.createElement('button');
+                    btn.className = 'bubble-btn';
+                    btn.textContent = 'Mark as Complete';
+                    btn.onclick = () => {
+                        progress[i] = true;
+                        saveProgress();
+                        renderDuoPath();
+                        // Bounce animation
+                        bubble.classList.add('completed');
+                        setTimeout(() => bubble.classList.remove('completed'), 600);
+                        // If all complete, scroll to CTA
+                        if (progress.every(Boolean)) {
+                            setTimeout(() => {
+                                document.getElementById('duo-cta-section').classList.add('active');
+                                document.getElementById('duo-cta-section').scrollIntoView({behavior: 'smooth'});
+                            }, 500);
+                        }
+                    };
+                    bubble.appendChild(btn);
+                }
+                bubblesDiv.appendChild(bubble);
+            });
+        }
+        window.addEventListener('resize', renderDuoPath);
+        renderDuoPath();
+
+        // --- CTA Section Logic ---
+        const ctaForm = document.getElementById('duo-cta-form');
+        const ctaSuccess = document.getElementById('duo-cta-success');
+        ctaForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            ctaForm.style.display = 'none';
+            ctaSuccess.style.display = '';
+        });
+    </script>
+</body>
+</html> 

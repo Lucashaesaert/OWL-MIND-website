@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Registration | OWL MIND</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: #0a192f;
+            color: white;
+            padding: 1rem 0;
+        }
+
+        .header h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-logo {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-logo img {
+            width: 30px;
+            margin-right: 0.5rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            color: #0a192f;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #0a192f;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0a192f;
+            box-shadow: 0 0 5px rgba(10, 25, 47, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #0a192f;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0033cc;
+        }
+
+        .required {
+            color: #ff0000;
+        }
+
+        .form-footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="Home_page.html" class="nav-logo">
+                    <img src="Items/Branding Items/immagelogo.png" alt="OWL MIND Logo"> OWL MIND
+                </a>
+            </div>
+        </nav>
+        <h1>Course Registration</h1>
+    </div>
+
+    <div class="container">
+        <h2 class="form-title">Register for Your Course</h2>
+        <form id="registrationForm" action="#" method="POST">
+            <div class="form-group">
+                <label for="fullName">Full Name <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+
+            <div class="form-group">
+                <label for="course">Selected Course <span class="required">*</span></label>
+                <select id="course" name="course" required>
+                    <option value="">Select a course</option>
+                    <option value="prompt-engineering">Prompt Engineering for Business Professionals</option>
+                    <option value="research">Research Course</option>
+                    <option value="class2">Class 2</option>
+                    <option value="class3">Class 3</option>
+                    <option value="class4">Class 4</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="experience">Previous Experience</label>
+                <select id="experience" name="experience">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Additional Comments</label>
+                <textarea id="message" name="message" rows="4"></textarea>
+            </div>
+
+            <button type="submit" class="btn">Submit Registration</button>
+        </form>
+
+        <div class="form-footer">
+            <p>Fields marked with <span class="required">*</span> are required</p>
+            <p>By submitting this form, you agree to our Terms of Service and Privacy Policy</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                course: document.getElementById('course').value,
+                experience: document.getElementById('experience').value
+            };
+
+            // Build query string
+            const queryString = Object.keys(formData)
+                .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(formData[key])}`)
+                .join('&');
+
+            // Redirect to confirmation page with form data
+            window.location.href = `registration_confirmation.html?${queryString}`;
+        });
+    </script>
+</body>
+</html> 
